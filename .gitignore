@@ -1,0 +1,11 @@
+# GNUPlot files
+*.table
+
+# Loader executable
+loader
+
+# VS Code
+.vscode
+
+# Test results
+/[0-9]*/
