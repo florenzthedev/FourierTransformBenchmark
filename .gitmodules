@@ -1,0 +1,9 @@
+[submodule "DFT"]
+	path = DFT
+	url = https://github.com/florenzthedev/DFT.git
+[submodule "FFT-C"]
+	path = FFT-C
+	url = https://github.com/florenzthedev/FFT-C.git
+[submodule "FFT-ASM"]
+	path = FFT-ASM
+	url = https://github.com/florenzthedev/FFT-ASM
