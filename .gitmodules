@@ -7,3 +7,6 @@
 [submodule "FFT-ASM"]
 	path = FFT-ASM
 	url = https://github.com/florenzthedev/FFT-ASM
+[submodule "FFT-MT"]
+	path = FFT-MT
+	url = https://github.com/florenzthedev/FFT-MT.git
