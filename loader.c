@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-typedef int (*ft_func_ptr)(double complex *, long);
+typedef int (*ft_func_ptr)(double complex *, long, int);
 #define INIT_BLOCK_SIZE 128
 #define MAX_LINE_SIZE 1024
 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
         "Usage: %s -s [library_filename] -l [table_filename] [-p]\n"
         "\t-s [library_filename]: name of shared object file to load. \n"
         "\t-l [table_filename]: name of table of values to load.\n"
-        "\t-p: optional, print results.\n");
+        "\t-p: optional, print results.\n", argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 
   struct timespec start, end;
   clock_gettime(CLOCK_MONOTONIC, &start);
-  int result = (*ft_func)(x, N);
+  int result = (*ft_func)(x, N, 0);
   clock_gettime(CLOCK_MONOTONIC, &end);
   if (result) {
     fprintf(stderr, "Error: called function failed.\n");
