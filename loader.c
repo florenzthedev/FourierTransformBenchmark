@@ -13,18 +13,22 @@ typedef int (*ft_func_ptr)(double complex *, long, int);
 int main(int argc, char *argv[]) {
   // Process arguments
   const char *library_filename = NULL, *table_filename = NULL;
-  int carg;
+  int carg, aux = 0;
   bool print_results = false;
-  while ((carg = getopt(argc, argv, "ps:t:")) != -1) {
+  while ((carg = getopt(argc, argv, "ps:t:a:")) != -1) {
     switch (carg) {
+      case 'p':
+        print_results = true;
+        break;
       case 's':
         library_filename = optarg;
         break;
       case 't':
         table_filename = optarg;
         break;
-      case 'p':
-        print_results = true;
+      case 'a':
+        aux = strtol(optarg, NULL, 10);
+        break;
       case '?':
         // Error message already printed out
         exit(EXIT_FAILURE);
@@ -94,7 +98,7 @@ int main(int argc, char *argv[]) {
 
   struct timespec start, end;
   clock_gettime(CLOCK_MONOTONIC, &start);
-  int result = (*ft_func)(x, N, 0);
+  int result = (*ft_func)(x, N, aux);
   clock_gettime(CLOCK_MONOTONIC, &end);
   if (result) {
     fprintf(stderr, "Error: called function failed.\n");
