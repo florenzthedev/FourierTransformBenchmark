@@ -1,19 +1,21 @@
 #include <complex.h>
 #include <dlfcn.h>
 #include <getopt.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 typedef int (*ft_func_ptr)(double complex *, long);
-#define INIT_BLOCK_SIZE 256
+#define INIT_BLOCK_SIZE 128
 #define MAX_LINE_SIZE 1024
 
 int main(int argc, char *argv[]) {
   // Process arguments
-  const char *library_filename, *table_filename;
+  const char *library_filename = NULL, *table_filename = NULL;
   int carg;
-  while ((carg = getopt(argc, argv, "s:t:")) != -1) {
+  bool print_results = false;
+  while ((carg = getopt(argc, argv, "ps:t:")) != -1) {
     switch (carg) {
       case 's':
         library_filename = optarg;
@@ -21,12 +23,23 @@ int main(int argc, char *argv[]) {
       case 't':
         table_filename = optarg;
         break;
+      case 'p':
+        print_results = true;
       case '?':
         // Error message already printed out
         exit(EXIT_FAILURE);
       default:
         abort();
     }
+  }
+
+  if (library_filename == NULL || table_filename == NULL) {
+    printf(
+        "Usage: %s -s [library_filename] -l [table_filename] [-p]\n"
+        "\t-s [library_filename]: name of shared object file to load. \n"
+        "\t-l [table_filename]: name of table of values to load.\n"
+        "\t-p: optional, print results.\n");
+    return EXIT_FAILURE;
   }
 
   void *library_handle = dlopen(library_filename, RTLD_LAZY);
@@ -90,6 +103,11 @@ int main(int argc, char *argv[]) {
   double elapsed = (end.tv_sec - start.tv_sec);
   elapsed += (end.tv_nsec - start.tv_nsec) / 1000000000.0;
   printf("%d,%f\n", N, elapsed);
+
+  if(print_results){
+    for(int j = 0; j < N; j++)
+      printf("%f,%fi\n", creal(x[j]), cimag(x[j]));
+  }
 
   dlclose(library_handle);
   return 0;
