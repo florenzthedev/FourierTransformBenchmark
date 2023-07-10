@@ -48,6 +48,7 @@ do
       if [ $? -eq 124 ]; then
         echo "Timeout at $timeoutTime seconds, recording..."
         echo "$power,$timeoutTime" >> "$testID/$benchName.txt"
+        break
       fi
     elif [ "$benchType" == "T" ]; then
       for j in $(seq $auxStart $auxEnd); do
@@ -56,6 +57,7 @@ do
         if [ $? -eq 124 ]; then
           echo "Timeout at $timeoutTime seconds, recording..."
           echo "$power,$timeoutTime" >> "$testID/${benchName}_${j}.txt"
+          break
         fi
       done
     fi
