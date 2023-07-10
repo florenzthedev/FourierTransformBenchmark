@@ -9,3 +9,11 @@ loader
 
 # Test results
 /[0-9]*/
+
+# Tex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.pdf

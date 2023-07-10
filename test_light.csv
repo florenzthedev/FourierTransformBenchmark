@@ -1,6 +1,6 @@
-8,20,10
+12,20,10
 sin(2*pi*x)
 L,DFT/libdft.so,dft
 L,FFT-C/libfft.so,fft_c
 L,FFT-ASM/libfft_s.so,fft_asm
-T,FFT-MT/libfft_mt.so,fft_mt,2,8
+T,FFT-MT/libfft_mt.so,fft_mt,2,4
