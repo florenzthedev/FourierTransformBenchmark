@@ -7,7 +7,7 @@
 #include <time.h>
 
 typedef int (*ft_func_ptr)(double complex *, long, int);
-#define INIT_BLOCK_SIZE 128
+#define INIT_BLOCK_SIZE 4
 #define MAX_LINE_SIZE 1024
 
 int main(int argc, char *argv[]) {

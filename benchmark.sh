@@ -35,7 +35,7 @@ for dir in */ ; do
   cd ..
 done
 
-tail -n +3 $1 | while IFS=',' read -r benchType benchExec benchName
+tail -n +3 $1 | while IFS=',' read -r benchType benchExec benchName auxStart auxEnd
 do
   for i in $(seq $startPow $endPow); do
     power=$((2**$i))
@@ -46,8 +46,15 @@ do
         echo "Timeout at $timeoutTime seconds, recording..."
         echo "$power,$timeoutTime" >> "$testID/$benchName.txt"
       fi
-    else
-      echo "TODO: Runnable benches..."
+    elif [ "$benchType" == "T" ]; then
+      for j in $(seq $auxStart $auxEnd); do
+        echo "Loading '$benchExec' and running size $power benchmark for $benchName with auxillary input $j..."
+        timeout $timeoutTime ./loader -s "$benchExec" -t "$testID/test$power.table" -a $j >> "$testID/${benchName}_${j}.txt"
+        if [ $? -eq 124 ]; then
+          echo "Timeout at $timeoutTime seconds, recording..."
+          echo "$power,$timeoutTime" >> "$testID/${benchName}_${j}.txt"
+        fi
+      done
     fi
   done
 done
