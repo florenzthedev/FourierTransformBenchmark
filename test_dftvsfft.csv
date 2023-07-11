@@ -1,0 +1,4 @@
+12,20,10
+sin(2*pi*x)
+L,DFT/libdft.so,dft
+L,FFT-C/libfft.so,fft_c

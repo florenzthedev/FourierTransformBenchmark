@@ -30,7 +30,7 @@ cycle list={
 
 \begin{document}
 \begin{tikzpicture}
-\begin{axis}[xmode=log,log basis x={2}, xlabel={Input Dataset Size}, ylabel={Seconds}]" > "$testID/graph.tex"
+\begin{axis}[xmode=log,log basis x={2}, xlabel={Input Dataset Size}, ylabel={Seconds}, legend style={at={(0.02,0.98)},anchor=north west}]" > "$testID/graph.tex"
 
 IFS=',' read -r startPow endPow timeoutTime < $1
 equation=$(sed -n '2p' $1)
@@ -62,34 +62,30 @@ do
   if [ "$benchType" == "L" ]; then
     echo "${benchName}," >> "$testID/legend.tex"
     echo "\addplot table[col sep=comma,header=false,x index=0,y index=1] {${benchName}.txt};" >> "$testID/graph.tex"
+    for i in $(seq $startPow $endPow); do
+      power=$((2**$i))
+      echo "Loading '$benchExec' and running size $power benchmark for $benchName..."
+      timeout $timeoutTime ./loader -s "$benchExec" -t "test$power.table" >> "$testID/$benchName.txt"
+      if [ $? -eq 124 ]; then
+        echo "Timeout at $timeoutTime seconds!"
+        break
+      fi
+    done
   elif [ "$benchType" == "T" ]; then
     for j in $(seq $auxStart $auxEnd); do
       echo "${benchName}_${j}," >> "$testID/legend.tex"
       echo "\addplot table[col sep=comma,header=false,x index=0,y index=1] {${benchName}_${j}.txt};" >> "$testID/graph.tex"
-    done
-  fi
-  for i in $(seq $startPow $endPow); do
-    power=$((2**$i))
-    if [ "$benchType" == "L" ]; then
-      echo "Loading '$benchExec' and running size $power benchmark for $benchName..."
-      timeout $timeoutTime ./loader -s "$benchExec" -t "test$power.table" >> "$testID/$benchName.txt"
-      if [ $? -eq 124 ]; then
-        echo "Timeout at $timeoutTime seconds, recording..."
-        echo "$power,$timeoutTime" >> "$testID/$benchName.txt"
-        break
-      fi
-    elif [ "$benchType" == "T" ]; then
-      for j in $(seq $auxStart $auxEnd); do
+      for i in $(seq $startPow $endPow); do
+        power=$((2**$i))
         echo "Loading '$benchExec' and running size $power benchmark for $benchName with auxillary input $j..."
         timeout $timeoutTime ./loader -s "$benchExec" -t "test$power.table" -a $j >> "$testID/${benchName}_${j}.txt"
         if [ $? -eq 124 ]; then
-          echo "Timeout at $timeoutTime seconds, recording..."
-          echo "$power,$timeoutTime" >> "$testID/${benchName}_${j}.txt"
+          echo "Timeout at $timeoutTime seconds!"
           break
         fi
       done
-    fi
-  done
+    done
+  fi
 done
 
 echo "Generating graph..."
