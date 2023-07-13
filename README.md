@@ -1,6 +1,11 @@
 # FourierTransformBenchmark
 A benchmark collection for comparing implementations of the Fourier transform.
 
+Sample output from running the test_heavy.csv on a 16-core AMD server:
+![graph](./sample.png)
+
+All but the multithreaded FFT with a high thread count time out!
+
 ## Usage
 `./benchmark.sh [test csv]` where test csv is a file in the following format:
 ```[smallest input power],[largest input power],[timeout in seconds]

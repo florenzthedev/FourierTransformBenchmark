@@ -25,7 +25,7 @@ cycle list={
         {orange, mark=*, thick},
         {purple, mark=*, thick},
         {brown, mark=*, thick},
-        {black, mark=*, thick},}
+        {black, mark=*, thick}}
         }
 
 \begin{document}
