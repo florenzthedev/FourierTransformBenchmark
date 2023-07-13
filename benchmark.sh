@@ -30,7 +30,7 @@ cycle list={
 
 \begin{document}
 \begin{tikzpicture}
-\begin{axis}[xmode=log,log basis x={2}, xlabel={Input Dataset Size}, ylabel={Seconds}, legend style={at={(0.02,0.98)},anchor=north west}]" > "$testID/graph.tex"
+\begin{axis}[xmode=log,log basis x={2}, xlabel={Input Dataset Size}, ylabel={Seconds}, legend style={at={(1.02,1.00)},anchor=north west}]" > "$testID/graph.tex"
 
 IFS=',' read -r startPow endPow timeoutTime < $1
 equation=$(sed -n '2p' $1)
